@@ -1,4 +1,4 @@
-# Title
+# The Salem Witch Trails
 
 ## Repository
 < https://github.com/lucyR-debug/The-Proposal.git >
