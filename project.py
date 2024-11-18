@@ -1,3 +1,6 @@
+import random
+
+
 
 welcome_text = """
 Welcome to the Oregon Trail! The year is 1850 and Americans are
@@ -12,6 +15,25 @@ MONTHS_WITH_31_DAYS = [1, 3, 5, 7, 8, 10, 12]
 MONTHS_WITH_30_DAYS = [4, 6, 9, 11]
 MONTHS_WITH_28_DAYS = [2]
 
+MIN_MILES_PER_TRAVEL = 30
+MAX_MILES_PER_TRAVEL = 60
+MIN_DAYS_PER_TRAVEL = 3
+MAX_DAYS_PER_TRAVEL = 7
+TOTAl_MILES = 2000
+
+MAX_HEALTH_LEVEL = 5
+MIN_DAYS_PER_REST = 2
+MAX_DAYS_PER_REST = 5
+
+FOOD_PER_HUNT = 100
+MIN_DAYS_PER_HUNT = 2
+MAX_DAYS_PER_HUNT = 5
+
+
+
+food = 500
+totalMilesTraveled = 0 
+health = 5
 day = 1
 month = 3 
 year = 0 
@@ -55,7 +77,46 @@ def add_day():
         year = 1
 
 
+def handle_travel():
+    global totalMilesTraveled
+    randomMilesTraveled = random.randint(MIN_MILES_PER_TRAVEL, MAX_MILES_PER_TRAVEL)
+    totalMilesTraveled += randomMilesTraveled
+    milesRemaining = TOTAl_MILES - totalMilesTraveled
 
+    print("you traveled" +str(randomMilesTraveled) + "for a total of" + str(totalMilesTraveled) + "total miles traveled!")
+    print("You have" + str(milesRemaining) + "miles left to go until Oregon.")
+    randomDaysTraveled = random.randint(MIN_DAYS_PER_TRAVEL, MAX_DAYS_PER_TRAVEL)
+    for day in range(randomDaysTraveled):
+        add_day()
+
+
+def handle_rest():
+    global health 
+    if health < MAX_HEALTH_LEVEL:
+        health += 1
+        randomDaysResting = random.randint(MIN_DAYS_PER_REST, MAX_DAYS_PER_REST)
+
+        for day in range(randomDaysResting):
+            add_day()
+
+        print("You rested for" +str(randomDaysResting) + "and your health is" + str(health))
+
+    else:
+
+        print ("You are fully healthed and you do not need to rest. ")
+
+
+def handle_hunt():
+    global food 
+
+    food += 100
+
+    randomDaysHunting = random.randint(MIN_DAYS_PER_HUNT, MAX_DAYS_PER_HUNT)
+
+    for day in range(randomDaysHunting):
+            add_day()
+
+    print("You take" + str(randomDaysHunting)+ "days tp collect 100 pounds of food.")
 
 print(welcome_text)
 print()
