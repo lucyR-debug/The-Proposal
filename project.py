@@ -49,10 +49,16 @@ def print_no_valid_command():
 
 
 def add_day():
+    global food
+    food -= 5
 
+    global health
     global day 
     global month
     global year
+
+    if day == 14 or day == 18:
+        health -= 1
 
     day +=1
 
@@ -118,6 +124,44 @@ def handle_hunt():
 
     print("You take" + str(randomDaysHunting)+ "days tp collect 100 pounds of food.")
 
+def handle_help():
+    print("Reinder, accepted commands are: (travel / rest / hunt / status / help / quit)")
+
+
+def check_status():
+    global month
+    global day
+    global totalMilesTraveled
+    global health
+    global food
+    print( "and your health is" + str(health))
+    print("you have" +str(food)+"total pounds of food")
+    milesRemaining = TOTAl_MILES - totalMilesTraveled
+    print("you traveled a total of" + str(totalMilesTraveled) + "total miles traveled!")
+    print("You have" + str(milesRemaining) + "miles left to go until Oregon.")
+
+    
+def check_status():
+    global year
+    global food
+    global health
+
+    if year >= 1:
+        handle_loss()
+
+    if food >= 1:
+        handle_loss()
+
+def handle_loss():
+    
+    check_status()
+    handle_quit()
+
+def handle_quit():
+    global gameStatus
+    gameStatus + "game over"
+
+
 print(welcome_text)
 print()
 
@@ -138,7 +182,7 @@ while gameStatus != 'game over' and userCommand != 'quit':
         handle_hunt()
 
     elif userCommand == 'status':
-        handle_status()
+        check_status()
 
     elif userCommand == 'help':
         handle_help()
