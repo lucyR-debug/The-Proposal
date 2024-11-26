@@ -62,17 +62,17 @@ def add_day():
 
     day +=1
 
-    if day >= 25 and month in MONTHS_WITH_28_DAYS:
+    if month in MONTHS_WITH_28_DAYS and day >28:
 
         day = 1
         month += 1
 
-    elif day >= 25 and month in MONTHS_WITH_30_DAYS:
+    elif month in MONTHS_WITH_30_DAYS and day > 30:
 
         day = 1
         month += 1
 
-    elif day >= 31 and month in MONTHS_WITH_31_DAYS:
+    elif month in MONTHS_WITH_31_DAYS and day > 31:
         day = 1
         month +=1 
 
@@ -91,6 +91,7 @@ def handle_travel():
 
     print("you traveled" +str(randomMilesTraveled) + "for a total of" + str(totalMilesTraveled) + "total miles traveled!")
     print("You have" + str(milesRemaining) + "miles left to go until Oregon.")
+
     randomDaysTraveled = random.randint(MIN_DAYS_PER_TRAVEL, MAX_DAYS_PER_TRAVEL)
     for day in range(randomDaysTraveled):
         add_day()
@@ -102,7 +103,7 @@ def handle_rest():
         health += 1
         randomDaysResting = random.randint(MIN_DAYS_PER_REST, MAX_DAYS_PER_REST)
 
-        for day in range(randomDaysResting):
+        for _ in range(randomDaysResting):
             add_day()
 
         print("You rested for" +str(randomDaysResting) + "and your health is" + str(health))
@@ -115,11 +116,11 @@ def handle_rest():
 def handle_hunt():
     global food 
 
-    food += 100
+    food += FOOD_PER_HUNT
 
     randomDaysHunting = random.randint(MIN_DAYS_PER_HUNT, MAX_DAYS_PER_HUNT)
 
-    for day in range(randomDaysHunting):
+    for _ in range(randomDaysHunting):
             add_day()
 
     print("You take" + str(randomDaysHunting)+ "days tp collect 100 pounds of food.")
@@ -129,38 +130,34 @@ def handle_help():
 
 
 def check_status():
-    global month
-    global day
-    global totalMilesTraveled
-    global health
-    global food
-    print( "and your health is" + str(health))
-    print("you have" +str(food)+"total pounds of food")
-    milesRemaining = TOTAl_MILES - totalMilesTraveled
-    print("you traveled a total of" + str(totalMilesTraveled) + "total miles traveled!")
-    print("You have" + str(milesRemaining) + "miles left to go until Oregon.")
+    global month, day, totalMilesTraveled, health, food, year
 
-    
-def check_status():
-    global year
-    global food
-    global health
+    print(f"Current date: {month}/{day}/{year}")
+    print(f"Health: {health}")
+    print(f"Food: {food} pounds")
+    print(f"Total miles traveled: {totalMilesTraveled}")
+    print(f"Remaining miles: {TOTAl_MILES - totalMilesTraveled}")
 
-    if year >= 1:
+    if health <= 0 or food <= 0:
+        print("You have run out of health or food. Game over!")
         handle_loss()
 
-    if food >= 1:
-        handle_loss()
+
 
 def handle_loss():
-    
+
     check_status()
     handle_quit()
 
 def handle_quit():
     global gameStatus
+    print("Game Over!")
     gameStatus + "game over"
 
+def handle_quit():
+    global gameStatus
+    print("You have quit the game.")
+    gameStatus = 'game over'
 
 print(welcome_text)
 print()
