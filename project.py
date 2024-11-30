@@ -42,6 +42,29 @@ year = 1692
 gameStatus= ' '
 userCommand = ' '
 
+coven_member = []
+player1 = ""
+coven1 = ''
+coven2 = ''
+coven3 = ''
+coven4 = ''
+
+characters = ["Tiffany, the Apothecary", "Mia, the Tailor", "Owen, the Printer"]
+
+character_dialogues = {
+    "Tiffany, the Apothecary": [
+        f"Tiffany walks towards you, she reeks of herbs and medicene, and around suspiciously. 'Did you hear the rumors {player1}? There are witches everywhere now. People are whispering... I don't feel safe.'",
+        f"'I can't help but feel like someone will accuse me next. I wonder if I should leave town before it's too late. You should too, {player1}.'"
+    ],
+    "Mia, the Tailor": [
+        f"Mia eyes her surroundings, her voice hushed. 'It's getting worse, isn't it {player1}? Everyones pointing fingers at everyone. I fear it's just a matter of time before they come for me.'",
+        "'I overheard some villagers talking about strange happenings. It makes my skin crawl. These witch hunts are spiraling out of control!'"
+    ],
+    "Owen, the Printer": [
+        "Owen quitely whispers to you in a moment of fear. 'The witch hysteria is growing. I see people pointing fingers at their neighbors. Who's next?'",
+        f"'I don't know how much longer I can stay here {player1}. The tensions are high. It's like everyone's too afraid to even speak openly anymore.'"
+    ]
+}
 
 def print_no_valid_command():
 
@@ -88,18 +111,31 @@ def add_day():
             print("The year is now 1693. You have survived the Salem Witch Trails!")
             handle_loss()
 
+        if (month == 7 and day == 19 and year == 1962) or \
+           (month == 8 and day == 19 and year == 1962) or \
+           (month == 9 and day == 22 and year == 1962):
+            random_kill_coven_member()
+            handle_loss()
+
+def random_kill_coven_member():
+    if len(coven_member)>0:
+        killed_member = random.choice(coven_member)
+        coven_member.remove(killed_member)
+        print(f"On {month}/{day}/{year}, the town has discovered one of your coven members is a witch!")
+        print(f"Tragically, {killed_member} has been executed!")
+        print("Your coven is now down by one member!")
+    else:
+        print("Your coven has already lost all its members.")
+        handle_loss()
+
 def handle_socialize():
-    global totalMilesTraveled
-    randomMilesTraveled = random.randint(MIN_MILES_PER_TRAVEL, MAX_MILES_PER_TRAVEL)
-    totalMilesTraveled += randomMilesTraveled
-    milesRemaining = TOTAl_MILES - totalMilesTraveled
+    chosen_character = random.choice(characters)
+    print(f"\nYou approach {chosen_character} to chat about the strange events happening around town...")
 
-    print("you traveled" +str(randomMilesTraveled) + "for a total of" + str(totalMilesTraveled) + "total miles traveled!")
-    print("You have" + str(milesRemaining) + "miles left to go until Oregon.")
+    dialogue = random.choice(character_dialogues[chosen_character])
+    print(f"{chosen_character}: {dialogue}")
+    add_day()
 
-    randomDaysTraveled = random.randint(MIN_DAYS_PER_TRAVEL, MAX_DAYS_PER_TRAVEL)
-    for day in range(randomDaysTraveled):
-        add_day()
 
 
 def handle_rest():
