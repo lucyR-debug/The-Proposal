@@ -1,15 +1,17 @@
 import random
-
+import art
 
 
 welcome_text = """
-Welcome to the Oregon Trail! The year is 1850 and Americans are
-headed out West to populate the frontier. Your goal is to travel
-by wagon train from Independence, MO to Oregon (2000 miles). You start
-on March 1st, and your goal is to reach Oregon by December 31st.
-The trail is arduous. Each day costs you food and health. You
-can hunt and rest, but you have to get there before winter!
+The year is 1692 and in colonial Massachusetts and in a town called
+Salem a mass hysteria has taken the people of the town, and the people of Salem
+are accussing women of being witches left and right, resulting in hangings and 
+burnings at the stake. The women of Salem walk on eggshells trying to advoid being accused. 
+Now you must do the same, you must avoid being accused of being a witch, except, you are a witch,
+and you and your coven must advoid being caught.
 """
+banner = art.text2art("Salem Witch Trails")
+
 
 MONTHS_WITH_31_DAYS = [1, 3, 5, 7, 8, 10, 12]
 MONTHS_WITH_30_DAYS = [4, 6, 9, 11]
@@ -35,8 +37,8 @@ food = 500
 totalMilesTraveled = 0 
 health = 5
 day = 1
-month = 3 
-year = 0 
+month = 1 
+year = 1692
 gameStatus= ' '
 userCommand = ' '
 
@@ -44,7 +46,7 @@ userCommand = ' '
 def print_no_valid_command():
 
     print("the command you have entered is not recognized, please enter a new command. ")
-    print("what would you like to do? (travel / rest / hunt / help / quit)")
+    print("what would you like to do? (Socialize / rest / chores / help / quit): ")
 
 
 
@@ -80,10 +82,13 @@ def add_day():
 
         month = 1
         day = 1
-        year = 1
+        year += 1
 
+        if year == 1693:
+            print("The year is now 1693. You have survived the Salem Witch Trails!")
+            handle_loss()
 
-def handle_travel():
+def handle_socialize():
     global totalMilesTraveled
     randomMilesTraveled = random.randint(MIN_MILES_PER_TRAVEL, MAX_MILES_PER_TRAVEL)
     totalMilesTraveled += randomMilesTraveled
@@ -113,7 +118,7 @@ def handle_rest():
         print ("You are fully healthed and you do not need to rest. ")
 
 
-def handle_hunt():
+def handle_chores():
     global food 
 
     food += FOOD_PER_HUNT
@@ -126,7 +131,7 @@ def handle_hunt():
     print("You take" + str(randomDaysHunting)+ "days tp collect 100 pounds of food.")
 
 def handle_help():
-    print("Reinder, accepted commands are: (travel / rest / hunt / status / help / quit)")
+    print("Reinder, accepted commands are: (travel / rest / hunt / status / help / quit): ")
 
 
 def check_status():
@@ -159,24 +164,35 @@ def handle_quit():
     print("You have quit the game.")
     gameStatus = 'game over'
 
+
+print(banner)
+input("Press Enter to play!")
 print(welcome_text)
 print()
+player1= input("What is your name, witch?:")
+print(f"welcome {player1}!")
+print("and what is the name of the memebers of your coven?")
+coven1= input("name of Coven Member 1:")
+coven2 = input("name of Coven Member 2:")
+coven3 = input("name of Coven Member 3:")
+coven4 = input("name of Coven Member 4:")
 
+print(f"Welcome {player1} and coven memebers, {coven1}, {coven2}, {coven3}, and {coven4} the goal of the game is to make it through the year without being caught and killed.")
 
 while gameStatus != 'game over' and userCommand != 'quit':
 
     check_status()
 
-    userCommand = input("what would you like to do? (travel / rest / hunt / help / quit)")
+    userCommand = input("what would you like to do? (Socialize / rest / chores / help / quit): ")
 
-    if userCommand == "travel":
-        handle_travel()
+    if userCommand == "socialize":
+        handle_socialize()
 
     elif userCommand == 'rest':
         handle_rest()
     
-    elif userCommand == 'hunt':
-        handle_hunt()
+    elif userCommand == 'chores':
+        handle_chores()
 
     elif userCommand == 'status':
         check_status()
@@ -188,4 +204,4 @@ while gameStatus != 'game over' and userCommand != 'quit':
         handle_quit()
 
     else:
-        print_not_valid_command()
+        print_no_valid_command()
