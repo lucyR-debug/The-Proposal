@@ -1,1 +1,4 @@
-# The-Proposal
+# The Salem Witch Trails  🧙
+Similar to the game The Oregon Trail, this is a text based adventure game, in which the player is a witch trying to survive during a time of mass execution in America. This game the player and her coven must go on through the year like normal without causing any suspicions that may lead to them getting killed. 
+# The History 📖
+The Salem Witch trials took place in Colonial Massachusetts, in 1692 and lasted all the way up until 1693. During this time 14 women and 5 men were burned, hung and/or stoned to death, and each of those deaths happened on one of these three dates: July 19, August 19, and September 22. These trials were a result of a mass hysterical that consumed the town at the time, but the reasons behind this hysteria are speculated to have resulted from fear and boredom, with the fear mainly resulting from strongly held Puritan beliefs. All and all the hysteria was caused mostly by unfounded fears…mostly
