@@ -63,8 +63,9 @@ no_chores_counter = 0
 def add_day():
     global suspicion, day, month, year, totalDaysPassed
 
-    totalDaysPassed += 20
-    day += 20
+    totalDaysPassed += 1  
+    day += 1
+
     while day > 31:
         if month in MONTHS_WITH_31_DAYS:
             if day > 31:
@@ -79,12 +80,15 @@ def add_day():
                 day -= 28
                 month += 1
 
-        if month > 12:
-            month = 1
-            year += 1
-            if year == 1693:
-                print("The year is now 1693. You have survived the Salem Witch Trials!")
-                handle_win()
+    if month > 12:
+        month = 1
+        year += 1
+        if year == 1693:
+            print("The year is now 1693. You have survived the Salem Witch Trials!")
+            handle_win()
+
+    print(f"Days have passed: {totalDaysPassed}. Current Date: {month}/{day}/{year}. Suspicion level: {suspicion}")
+
 
     if day == 14 or day == 18:
         suspicion += 1 
@@ -119,21 +123,17 @@ def handle_socialize():
 
 
 def handle_rest():
-    global suspicion 
+    global suspicion
     if suspicion < 3:
-        print("you've chosen rest to advoid gaining more suspcian")
-        suspicion += 1
-        randomDaysResting = random.randint(1,3)
-        
+        print("you've chosen rest to avoid gaining more suspicion.")
+        suspicion = 0  
+        randomDaysResting = random.randint(1, 3)
+        add_day()
 
-        for _ in range(randomDaysResting):
-            add_day()
 
-        print(f"You rested for {randomDaysResting} and your suspicion level is now {suspicion}.")
-
+        print(f"You rested for {randomDaysResting} days and your suspicion level is now {suspicion}.")
     else:
-
-        print ("your suspicion level is too high.")
+        print("your suspicion level is too high.")
 
 
 def handle_chores():
@@ -144,27 +144,31 @@ def handle_chores():
     print("3. Prepare the food")
     print("4. Do the wash")
 
-    chore_pick = input("which do you pick? (enter a number, please)")
+    chore_pick = input("Which do you pick? (enter a number, please)")
 
     if chore_pick == "1":
-        print("you sweep the floor and clean around the house")
+        print("You sweep the floor and clean around the house.")
+        suspicion = 0  
         add_day()
 
     elif chore_pick == "2":
-        print("you tend to the garden, smelled the flowers and collected so herbs")
-        add_day()
+        print("You tend to the garden, smell the flowers, and collect some herbs.")
+        suspicion = 0  
 
     elif chore_pick == "3":
         print("You spend the day preparing food for the coven.")
+        suspicion = 0  
         add_day()
 
     elif chore_pick == "4":
-        print("You spend the day doing the wash, cleaning your clothes")
+        print("You spend the day doing the wash, cleaning your clothes.")
+        suspicion = 0 
         add_day()
 
     else:
         print("Invalid choice. Please choose a valid task.")
-        handle_chores() 
+        handle_chores()
+ 
 
 def handle_turn(choice):
     global no_chores_counter
