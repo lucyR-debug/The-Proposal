@@ -88,12 +88,13 @@ def add_day():
 
     if day == 14 or day == 18:
         suspicion += 1
-    print(f"Days have passed: {totalDaysPassed}. Current Date: {month}/{day}/{year}. Suspicion level: {suspicion}")
 
     if (month == 7 and day == 19 and year == 1692) or \
        (month == 8 and day == 19 and year == 1692) or \
        (month == 9 and day == 22 and year == 1692):
         random_kill_coven_member()
+
+    print(f"Days have passed: {totalDaysPassed}. Current Date: {month}/{day}/{year}. Suspicion level: {suspicion}")
 
 
     if day == 14 or day == 18:
@@ -106,6 +107,7 @@ def add_day():
         random_kill_coven_member()
 
 def random_kill_coven_member():
+    global coven_member
     if len(coven_member)>0:
         killed_member = random.choice(coven_member)
         coven_member.remove(killed_member)
@@ -241,6 +243,8 @@ coven1= input("name of Coven Member 1:")
 coven2 = input("name of Coven Member 2:")
 coven3 = input("name of Coven Member 3:")
 coven4 = input("name of Coven Member 4:")
+
+coven_member = [coven1, coven2, coven3, coven4]
 
 print(f"Welcome {player1} and coven memebers, {coven1}, {coven2}, {coven3}, and {coven4} the goal of the game is to make it through the year without being caught and killed.")
 
