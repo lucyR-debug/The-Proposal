@@ -15,7 +15,6 @@ and you and your coven must advoid being caught.
 """
 banner = art.text2art("Salem Witch Trails")
 
-
 MONTHS_WITH_31_DAYS = [1, 3, 5, 7, 8, 10, 12]
 MONTHS_WITH_30_DAYS = [4, 6, 9, 11]
 MONTHS_WITH_28_DAYS = [2]
@@ -66,19 +65,17 @@ def add_day():
     totalDaysPassed += 1  
     day += 1
 
-    while day > 31:
-        if month in MONTHS_WITH_31_DAYS:
-            if day > 31:
-                day -= 31
-                month += 1
-        elif month in MONTHS_WITH_30_DAYS:
-            if day > 30:
-                day -= 30
-                month += 1
-        elif month in MONTHS_WITH_28_DAYS:
-            if day > 28:
-                day -= 28
-                month += 1
+    days_in_month = 31
+    if month in MONTHS_WITH_31_DAYS:
+        days_in_month = 31
+    elif month in MONTHS_WITH_30_DAYS:
+        days_in_month = 30
+    elif month in MONTHS_WITH_28_DAYS:
+        days_in_month = 28
+
+    if day > days_in_month:
+        day = 1
+        month += 1
 
     if month > 12:
         month = 1
@@ -88,6 +85,15 @@ def add_day():
             handle_win()
 
     print(f"Days have passed: {totalDaysPassed}. Current Date: {month}/{day}/{year}. Suspicion level: {suspicion}")
+
+    if day == 14 or day == 18:
+        suspicion += 1
+    print(f"Days have passed: {totalDaysPassed}. Current Date: {month}/{day}/{year}. Suspicion level: {suspicion}")
+
+    if (month == 7 and day == 19 and year == 1692) or \
+       (month == 8 and day == 19 and year == 1692) or \
+       (month == 9 and day == 22 and year == 1692):
+        random_kill_coven_member()
 
 
     if day == 14 or day == 18:
