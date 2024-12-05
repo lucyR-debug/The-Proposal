@@ -1,6 +1,9 @@
 import random
 import art
 
+win_image = art.text2art("You Win!")
+lose_image = art.text2art("You're a witch!")
+
 
 welcome_text = """
 The year is 1692 and in colonial Massachusetts and in a town called
@@ -17,25 +20,8 @@ MONTHS_WITH_31_DAYS = [1, 3, 5, 7, 8, 10, 12]
 MONTHS_WITH_30_DAYS = [4, 6, 9, 11]
 MONTHS_WITH_28_DAYS = [2]
 
-MIN_MILES_PER_TRAVEL = 30
-MAX_MILES_PER_TRAVEL = 60
-MIN_DAYS_PER_TRAVEL = 3
-MAX_DAYS_PER_TRAVEL = 7
-TOTAl_MILES = 2000
-
-MAX_HEALTH_LEVEL = 5
-MIN_DAYS_PER_REST = 2
-MAX_DAYS_PER_REST = 5
-
-FOOD_PER_HUNT = 100
-MIN_DAYS_PER_HUNT = 2
-MAX_DAYS_PER_HUNT = 5
-
-
-
-food = 500
 totalMilesTraveled = 0 
-health = 5
+suspicion = 0
 day = 1
 month = 1 
 year = 1692
@@ -71,51 +57,43 @@ def print_no_valid_command():
     print("the command you have entered is not recognized, please enter a new command. ")
     print("what would you like to do? (Socialize / rest / chores / help / quit): ")
 
-
+totalDaysPassed = 0 
+no_chores_counter = 0
 
 def add_day():
-    global food
-    food -= 5
+    global suspicion, day, month, year, totalDaysPassed
 
-    global health
-    global day 
-    global month
-    global year
+    totalDaysPassed += 20
+    day += 20
+    while day > 31:
+        if month in MONTHS_WITH_31_DAYS:
+            if day > 31:
+                day -= 31
+                month += 1
+        elif month in MONTHS_WITH_30_DAYS:
+            if day > 30:
+                day -= 30
+                month += 1
+        elif month in MONTHS_WITH_28_DAYS:
+            if day > 28:
+                day -= 28
+                month += 1
+
+        if month > 12:
+            month = 1
+            year += 1
+            if year == 1693:
+                print("The year is now 1693. You have survived the Salem Witch Trials!")
+                handle_win()
 
     if day == 14 or day == 18:
-        health -= 1
+        suspicion += 1 
+    print(f"Days have passed: {totalDaysPassed}. Current Date: {month}/{day}/{year}. Suspicion level: {suspicion}")
 
-    day +=1
-
-    if month in MONTHS_WITH_28_DAYS and day >28:
-
-        day = 1
-        month += 1
-
-    elif month in MONTHS_WITH_30_DAYS and day > 30:
-
-        day = 1
-        month += 1
-
-    elif month in MONTHS_WITH_31_DAYS and day > 31:
-        day = 1
-        month +=1 
-
-    if month > 12:
-
-        month = 1
-        day = 1
-        year += 1
-
-        if year == 1693:
-            print("The year is now 1693. You have survived the Salem Witch Trails!")
-            handle_loss()
-
-        if (month == 7 and day == 19 and year == 1962) or \
-           (month == 8 and day == 19 and year == 1962) or \
-           (month == 9 and day == 22 and year == 1962):
-            random_kill_coven_member()
-            handle_loss()
+    if (month == 7 and day == 19 and year == 1692) or \
+       (month == 8 and day == 19 and year == 1692) or \
+       (month == 9 and day == 22 and year == 1692):
+        random_kill_coven_member()
 
 def random_kill_coven_member():
     if len(coven_member)>0:
@@ -129,66 +107,107 @@ def random_kill_coven_member():
         handle_loss()
 
 def handle_socialize():
+    global suspicion
     chosen_character = random.choice(characters)
     print(f"\nYou approach {chosen_character} to chat about the strange events happening around town...")
 
     dialogue = random.choice(character_dialogues[chosen_character])
     print(f"{chosen_character}: {dialogue}")
+    suspicion += 1
     add_day()
 
 
 
 def handle_rest():
-    global health 
-    if health < MAX_HEALTH_LEVEL:
-        health += 1
-        randomDaysResting = random.randint(MIN_DAYS_PER_REST, MAX_DAYS_PER_REST)
+    global suspicion 
+    if suspicion < 3:
+        print("you've chosen rest to advoid gaining more suspcian")
+        suspicion += 1
+        randomDaysResting = random.randint(1,3)
+        
 
         for _ in range(randomDaysResting):
             add_day()
 
-        print("You rested for" +str(randomDaysResting) + "and your health is" + str(health))
+        print(f"You rested for {randomDaysResting} and your suspicion level is now {suspicion}.")
 
     else:
 
-        print ("You are fully healthed and you do not need to rest. ")
+        print ("your suspicion level is too high.")
 
 
 def handle_chores():
-    global food 
+    global suspicion
+    print("\nYou have decided to do some chores. Choose one of the following tasks:")
+    print("1. Sweep the floor")
+    print("2. Tend to the garden")
+    print("3. Prepare the food")
+    print("4. Do the wash")
 
-    food += FOOD_PER_HUNT
+    chore_pick = input("which do you pick? (enter a number, please)")
 
-    randomDaysHunting = random.randint(MIN_DAYS_PER_HUNT, MAX_DAYS_PER_HUNT)
+    if chore_pick == "1":
+        print("you sweep the floor and clean around the house")
+        add_day()
 
-    for _ in range(randomDaysHunting):
-            add_day()
+    elif chore_pick == "2":
+        print("you tend to the garden, smelled the flowers and collected so herbs")
+        add_day()
 
-    print("You take" + str(randomDaysHunting)+ "days tp collect 100 pounds of food.")
+    elif chore_pick == "3":
+        print("You spend the day preparing food for the coven.")
+        add_day()
+
+    elif chore_pick == "4":
+        print("You spend the day doing the wash, cleaning your clothes")
+        add_day()
+
+    else:
+        print("Invalid choice. Please choose a valid task.")
+        handle_chores() 
+
+def handle_turn(choice):
+    global no_chores_counter
+    if choice == "chores":
+        no_chores_counter = 0  
+        handle_chores()  
+    else:
+        no_chores_counter += 1  
+        if no_chores_counter == 3:
+            print("You have been accused of being a witch and killed!")
+            handle_loss()  
 
 def handle_help():
     print("Reinder, accepted commands are: (travel / rest / hunt / status / help / quit): ")
 
 
 def check_status():
-    global month, day, totalMilesTraveled, health, food, year
+    global month, day, totalMilesTraveled, suspicion, year
 
     print(f"Current date: {month}/{day}/{year}")
-    print(f"Health: {health}")
-    print(f"Food: {food} pounds")
-    print(f"Total miles traveled: {totalMilesTraveled}")
-    print(f"Remaining miles: {TOTAl_MILES - totalMilesTraveled}")
+    print(f"Suspicion: {suspicion}")
+    print(f"Today: {totalDaysPassed} days have passed since the start of the year.")
+    
+    days_in_1962 = 365 * 1
+    days_left = days_in_1962 - totalDaysPassed
 
-    if health <= 0 or food <= 0:
-        print("You have run out of health or food. Game over!")
+    print(f"Total days remaining until 1963: {days_left}")
+    
+    if suspicion >= 3:
+        print("You've reached max suspicion and town has declared you a witch!")
         handle_loss()
 
 
 
 def handle_loss():
 
-    check_status()
+    print(lose_image)
+    print("Game Over!")
     handle_quit()
+
+def handle_win():
+    print(win_image)
+    print("Congradulations! you survived!")
 
 def handle_quit():
     global gameStatus
@@ -207,7 +226,7 @@ print(welcome_text)
 print()
 player1= input("What is your name, witch?:")
 print(f"welcome {player1}!")
-print("and what is the name of the memembers of your coven?")
+print("and what is the name of the memebers of your coven?")
 coven1= input("name of Coven Member 1:")
 coven2 = input("name of Coven Member 2:")
 coven3 = input("name of Coven Member 3:")
@@ -228,7 +247,7 @@ while gameStatus != 'game over' and userCommand != 'quit':
         handle_rest()
     
     elif userCommand == 'chores':
-        handle_chores()
+        handle_turn("chores")
 
     elif userCommand == 'status':
         check_status()
@@ -241,3 +260,5 @@ while gameStatus != 'game over' and userCommand != 'quit':
 
     else:
         print_no_valid_command()
+
+   
