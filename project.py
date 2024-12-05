@@ -108,15 +108,20 @@ def add_day():
 
 def random_kill_coven_member():
     global coven_member
-    if len(coven_member)>0:
+    if len(coven_member) > 1:
         killed_member = random.choice(coven_member)
         coven_member.remove(killed_member)
         print(f"On {month}/{day}/{year}, the town has discovered one of your coven members is a witch!")
         print(f"Tragically, {killed_member} has been executed!")
-        print("Your coven is now down by one member!")
+        print(f"Your coven is now down by one member!")
+    elif len(coven_member) == 1:
+        print(f"On {month}/{day}/{year}, the town has discovered one of your coven members is a witch!")
+        print(f"Tragically, {coven_member[0]} has been executed!")
+        print("Your coven is now down by one member, and only one member remains.")
     else:
         print("Your coven has already lost all its members.")
         handle_loss()
+
 
 def handle_socialize():
     global suspicion
